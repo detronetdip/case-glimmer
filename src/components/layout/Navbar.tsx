@@ -1,15 +1,16 @@
-
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Bell, HelpCircle, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Bell, HelpCircle, MessageSquare, Search } from "lucide-react";
 
 const Navbar = () => {
   return (
     <nav className="border-b border-effectiv-border bg-white px-4 py-2 flex items-center justify-between h-14">
       <div className="flex items-center">
-        <div className="text-effectiv-purple font-bold text-xl mr-6">effectiv</div>
+        <div className="py-8">
+          <div className="text-effectiv-purple font-bold text-xl mr-6">CMS</div>
+          {/* <div className="text-effectiv-purple text-xs mr-6">Case management syatem</div> */}
+        </div>
         <div className="relative w-64">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input

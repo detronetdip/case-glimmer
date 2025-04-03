@@ -16,6 +16,8 @@ const CaseApplicantDetails = ({ caseDetails }: CaseApplicantDetailsProps) => {
     { label: "Primary Email", value: details.primaryEmail },
     { label: "Primary Phone", value: details.primaryPhone },
     { label: "Date Of Birth", value: details.dateOfBirth },
+    { label: "Occupation", value: details.occupation },
+    { label: "Employer", value: details.employer },
   ];
 
   return (

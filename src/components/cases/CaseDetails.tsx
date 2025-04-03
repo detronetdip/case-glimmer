@@ -5,7 +5,7 @@ import { useCaseStore } from "@/store/useCaseStore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ChevronLeft, Flag } from "lucide-react";
+import { ChevronLeft, Flag, RotateCwIcon } from "lucide-react";
 import CaseStatusBadge from "./CaseStatusBadge";
 import TagBadge from "./TagBadge";
 import CaseHistory from "./CaseHistory";
@@ -17,12 +17,14 @@ const CaseDetails = () => {
   const navigate = useNavigate();
   const { cases, selectedCase, selectCase, clearSelectedCase } = useCaseStore();
   const [activeTab, setActiveTab] = useState<"details" | "history">("details");
-  
+
   useEffect(() => {
     if (id) {
-      selectCase(id);
+      setTimeout(() => {
+        selectCase(id);
+      }, 2000);
     }
-    
+
     return () => {
       clearSelectedCase();
     };
@@ -30,15 +32,10 @@ const CaseDetails = () => {
 
   if (!selectedCase) {
     return (
-      <div className="p-8 text-center">
-        <p>Case not found</p>
-        <Button 
-          variant="outline" 
-          className="mt-4"
-          onClick={() => navigate('/')}
-        >
-          Back to Cases
-        </Button>
+      <div className="min-h-screen bg-effectiv-background flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <p className="flex gap-2">Fetching <RotateCwIcon className="animate-spin"/> </p>
+        </div>
       </div>
     );
   }
@@ -47,11 +44,12 @@ const CaseDetails = () => {
     <div className="min-h-screen bg-effectiv-background">
       <div className="py-4 px-6 bg-white border-b border-effectiv-border flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             className="text-gray-500"
             onClick={() => navigate('/')}
+            aria-label="Back to Cases"
           >
             <ChevronLeft className="mr-1 h-4 w-4" /> Back
           </Button>

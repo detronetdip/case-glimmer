@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { Case, Note, useCaseStore } from "@/store/useCaseStore";
+import { useRef, useState } from "react";
+import { Case, CaseStatus, Note, useCaseStore } from "@/store/useCaseStore";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -12,29 +12,37 @@ interface CaseHistoryProps {
 }
 
 const CaseHistory = ({ caseData }: CaseHistoryProps) => {
-  const [noteText, setNoteText] = useState("");
-  const { addNote } = useCaseStore();
-  
+  const noteText = useRef(null);
+  const { addNote, updateCaseStatus } = useCaseStore();
+
   const handleAddNote = () => {
-    if (!noteText.trim()) return;
-    
+    console.log("d")
+    if (!noteText.current.value) return;
+
     addNote(caseData.id, {
-      text: noteText,
+      text: noteText.current.value,
       addedBy: "admin user"
     });
-    
-    setNoteText("");
+
+    noteText.current.value = ""
   };
-  
+
+  const handleUpdateStatus = (status: CaseStatus) => {
+
+    updateCaseStatus(caseData.id, status);
+
+
+  };
+
   return (
     <Card className="h-full">
       <CardHeader className="py-3 px-4 border-b border-effectiv-border flex flex-row items-center justify-between">
         <h3 className="font-semibold">Case History</h3>
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           size="sm"
           className="h-8 w-8 p-0"
-          onClick={() => {}}
+          onClick={() => { }}
         >
           <span className="sr-only">Expand</span>
           <svg
@@ -65,7 +73,7 @@ const CaseHistory = ({ caseData }: CaseHistoryProps) => {
           ) : (
             <div className="p-4 text-center text-gray-500">No history available</div>
           )}
-          
+
           <div className="p-4">
             <div className="mb-4">
               <h4 className="text-sm font-medium mb-1">Notes</h4>
@@ -73,8 +81,7 @@ const CaseHistory = ({ caseData }: CaseHistoryProps) => {
                 <Textarea
                   placeholder="Take notes here..."
                   className="min-h-24 resize-none border-0"
-                  value={noteText}
-                  onChange={(e) => setNoteText(e.target.value)}
+                  ref={noteText}
                 />
                 <div className="flex items-center justify-between border-t border-input p-2">
                   <div className="flex items-center space-x-2">
@@ -105,7 +112,8 @@ const CaseHistory = ({ caseData }: CaseHistoryProps) => {
                       size="sm"
                       className="bg-effectiv-purple hover:bg-effectiv-lightPurple"
                       onClick={handleAddNote}
-                      disabled={!noteText.trim()}
+                      // disabled={!noteText.trim()}
+                      aria-label="save"
                     >
                       Save
                     </Button>
@@ -113,19 +121,16 @@ const CaseHistory = ({ caseData }: CaseHistoryProps) => {
                 </div>
               </div>
             </div>
-            
+
             <div className="flex justify-between">
               <div>
-                <select className="text-sm border border-input rounded-md px-2 py-1">
+                <select className="text-sm border border-input rounded-md px-2 py-1" onChange={(e) => handleUpdateStatus(e.target.value as CaseStatus)}>
                   <option>Case status</option>
-                  <option>Approve</option>
-                  <option>Review</option>
-                  <option>Reject</option>
+                  <option value={"Created"}>Created</option>
+                  <option value={"Approve"}>Approve</option>
+                  <option value={"Review"}>Review</option>
+                  <option value={"Reject"}>Reject</option>
                 </select>
-              </div>
-              <div>
-                <Button variant="outline" className="mr-2">Cancel</Button>
-                <Button className="bg-effectiv-purple hover:bg-effectiv-lightPurple">Save</Button>
               </div>
             </div>
           </div>

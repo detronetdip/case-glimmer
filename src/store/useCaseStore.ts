@@ -1,7 +1,7 @@
 
 import { create } from 'zustand';
 
-export type CaseStatus = 'Review' | 'Approve' | 'Reject';
+export type CaseStatus = 'Review' | 'Approve' | 'Reject' | 'Created';
 
 export type Tag = {
   id: string;
@@ -33,6 +33,8 @@ export type Case = {
     primaryEmail?: string;
     primaryPhone?: string;
     dateOfBirth?: string;
+    occupation?: string;
+    employer?: string;
     geoLocation?: {
       lat: number;
       lng: number;
@@ -50,31 +52,32 @@ interface CaseStore {
   selectCase: (caseId: string) => void;
   clearSelectedCase: () => void;
   addNote: (caseId: string, note: Omit<Note, 'id' | 'date' | 'time'>) => void;
+  updateCaseStatus: (caseId: string, status: CaseStatus) => void;
 }
 
 const MOCK_CASES: Case[] = [
   {
     id: '1',
-    applicationId: '20240716_03',
-    status: 'Review',
-    firstName: 'George',
-    lastName: 'Michael',
+    applicationId: 'FR-PEP-CASE-01',
+    status: 'Created',
+    firstName: 'Roman',
+    lastName: 'Abramovich',
     evaluationTime: '16 Jul 24, 17:57',
     tags: [
-      { id: '1', name: 'Phone Not Valid', color: 'yellow' },
-      { id: '2', name: 'New Email Domain', color: 'blue' },
+      { id: '3', name: 'Watchlist Hit', color: 'purple' },
     ],
-    assignee: 'archeragent@effectiv.ai',
+    assignee: 'investigator@fravity.ai',
     details: {
       ssn: '123-45-6789',
-      primaryAddress: '123 Main St, New York, NY 10001',
-      primaryEmail: 'george.michael@example.com',
+      primaryAddress: 'Moscow, Russia',
+      primaryEmail: 'roman.abra@casex.com',
       primaryPhone: '555-123-4567',
-      dateOfBirth: '01/15/1985',
+      dateOfBirth: '24/10/1966',
       geoLocation: {
         lat: 40.7128,
         lng: -74.0060,
       },
+      occupation: 'Entrepreneur'
     },
     notes: [
       {
@@ -88,21 +91,21 @@ const MOCK_CASES: Case[] = [
   },
   {
     id: '2',
-    applicationId: '1234',
-    status: 'Review',
-    firstName: 'Alexandre',
-    lastName: 'Kvinikadze',
+    applicationId: 'FR-PEP-CASE-02',
+    status: 'Created',
+    firstName: 'Roman',
+    lastName: 'Abramovich',
     evaluationTime: '04 Dec 24, 02:33',
     tags: [
-      { id: '3', name: 'Address Mismatch', color: 'yellow' },
+      { id: '3', name: 'Watchlist Hit', color: 'purple' },
     ],
-    assignee: 'archeragent@effectiv.ai',
+    assignee: 'investigator@fravity.ai',
     details: {
       ssn: '987-65-4321',
-      primaryAddress: '456 Oak St, San Francisco, CA 94101',
-      primaryEmail: 'skvinikadze@frivity.ai',
+      primaryAddress: 'Minsk, Belarus',
+      primaryEmail: 'movich.oman@crafty.ai',
       primaryPhone: '555-987-6543',
-      dateOfBirth: '05/22/1990',
+      dateOfBirth: '12/10/1984',
       geoLocation: {
         lat: 37.7749,
         lng: -122.4194,
@@ -116,57 +119,49 @@ const MOCK_CASES: Case[] = [
         date: '21 Mar 25',
         time: '05:29',
       },
-      {
-        id: '3',
-        text: "asd;fjasdkflasd;fjasdkjf;asdkjf",
-        addedBy: 'admin user',
-        date: '20 Mar 25',
-        time: '06:36',
-      },
-      {
-        id: '4',
-        text: "j;sdkfjg;asdkfja;sdkfj",
-        addedBy: 'admin user',
-        date: '20 Mar 25',
-        time: '06:15',
-      },
     ],
   },
   {
     id: '3',
-    applicationId: 'FR-PEP-Case-1',
+    applicationId: 'FR-PEP-CASE-03',
     status: 'Approve',
-    firstName: 'Najib',
-    lastName: 'Razak',
+    firstName: 'Ali',
+    lastName: 'Reza',
     evaluationTime: '15 Oct 24, 23:16',
-    tags: [],
-    assignee: null,
+    tags: [
+      { id: '3', name: 'Watchlist Hit', color: 'purple' },
+    ],
+    assignee: 'investigator@fravity.ai',
     details: {
       ssn: '456-78-9012',
-      primaryAddress: '789 Pine St, Chicago, IL 60601',
-      primaryEmail: 'najib.razak@example.com',
+      primaryAddress: 'San Jose, CA, USA',
+      primaryEmail: 'ali@meta.com',
       primaryPhone: '555-456-7890',
-      dateOfBirth: '08/10/1978',
+      dateOfBirth: '12/10/1994',
       geoLocation: {
         lat: 41.8781,
         lng: -87.6298,
       },
+      occupation: 'Software Engineer',
+      employer: 'Meta Inc',
     },
     notes: [],
   },
   {
     id: '4',
-    applicationId: 'DD-FR-1',
+    applicationId: 'FR-PEP-CASE-04',
     status: 'Approve',
-    firstName: '',
-    lastName: '',
+    firstName: 'Ali',
+    lastName: 'Reza',
     evaluationTime: '14 Oct 24, 03:33',
-    tags: [],
-    assignee: null,
+    tags: [
+      { id: '3', name: 'Watchlist Hit', color: 'purple' },
+    ],
+    assignee: 'investigator@fravity.ai',
     details: {
       ssn: '789-01-2345',
-      primaryAddress: '101 Maple Ave, Boston, MA 02108',
-      primaryEmail: 'contact@example.com',
+      primaryAddress: 'Tehran, Iran',
+      primaryEmail: 'reza@rubflow.com',
       primaryPhone: '555-789-0123',
       dateOfBirth: '03/25/1982',
       geoLocation: {
@@ -178,20 +173,19 @@ const MOCK_CASES: Case[] = [
   },
   {
     id: '5',
-    applicationId: '20240716_02',
+    applicationId: 'FR-PEP-CASE-05',
     status: 'Approve',
     firstName: 'Adam',
     lastName: 'Clarke',
     evaluationTime: '16 Jul 24, 17:54',
     tags: [
-      { id: '4', name: 'Device Incognito', color: 'yellow' },
-      { id: '5', name: 'Experian Success', color: 'green' },
+      { id: '3', name: 'Watchlist Hit', color: 'purple' },
     ],
-    assignee: 'archeragent@effectiv.ai',
+    assignee: 'investigator@fravity.ai',
     details: {
       ssn: '321-65-9870',
       primaryAddress: '202 Elm St, Los Angeles, CA 90001',
-      primaryEmail: 'adam.clarke@example.com',
+      primaryEmail: 'adam.clarke@geopool.com',
       primaryPhone: '555-321-6547',
       dateOfBirth: '11/30/1979',
       geoLocation: {
@@ -213,7 +207,7 @@ export const useCaseStore = create<CaseStore>((set, get) => ({
     set({ loading: true });
     // Simulate API fetch with mock data
     setTimeout(() => {
-      set({ cases: MOCK_CASES, loading: false });
+      set({ cases: get().cases.length ? get().cases : MOCK_CASES, loading: false });
     }, 500);
   },
 
@@ -256,8 +250,22 @@ export const useCaseStore = create<CaseStore>((set, get) => ({
         }
         return c;
       }),
-      selectedCase: state.selectedCase?.id === caseId 
+      selectedCase: state.selectedCase?.id === caseId
         ? { ...state.selectedCase, notes: [...(state.selectedCase.notes || []), newNote] }
+        : state.selectedCase
+    }));
+  },
+
+  updateCaseStatus: (caseId, status) => {
+    set(state => ({
+      cases: state.cases.map(c => {
+        if (c.id === caseId) {
+          return { ...c, status };
+        }
+        return c;
+      }),
+      selectedCase: state.selectedCase?.id === caseId
+        ? { ...state.selectedCase, status: status }
         : state.selectedCase
     }));
   }

@@ -1,4 +1,3 @@
-
 import CasesTable from "@/components/cases/CasesTable";
 import CaseFilter from "@/components/cases/CaseFilter";
 import { Button } from "@/components/ui/button";

@@ -73,7 +73,7 @@ const CasesTable = () => {
                   <div className="flex items-center space-x-2">
                     <Avatar className="h-6 w-6">
                       <AvatarFallback className="bg-effectiv-purple text-white text-xs">
-                        A
+                        I
                       </AvatarFallback>
                     </Avatar>
                     <span className="text-sm">{caseItem.assignee}</span>
