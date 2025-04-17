@@ -34,7 +34,7 @@ const CaseDetails = () => {
     return (
       <div className="min-h-screen bg-effectiv-background flex items-center justify-center">
         <div className="flex flex-col items-center">
-          <p className="flex gap-2">Fetching <RotateCwIcon className="animate-spin"/> </p>
+          <p className="flex gap-2">Fetching <RotateCwIcon className="animate-spin" /> </p>
         </div>
       </div>
     );
@@ -76,7 +76,10 @@ const CaseDetails = () => {
               <h2 className="text-2xl font-semibold">{selectedCase.applicationId}</h2>
               <CaseStatusBadge status={selectedCase.status} />
             </div>
-            <Button variant="outline">See Decision Path</Button>
+            <div className="flex gap-2 ins-bts">
+              
+              <Button variant="outline">See Decision Path</Button>
+            </div>
           </div>
           <div className="p-4 grid grid-cols-2 gap-4">
             <div>
@@ -118,9 +121,9 @@ const CaseDetails = () => {
             </div>
           )}
         </div>
-          <div id="insight" className="my-4">
+        <div id="insight" className="my-4">
 
-          </div>
+        </div>
         <div className="grid grid-cols-7 gap-6">
           <div className="col-span-4">
             <div className="space-y-6">
