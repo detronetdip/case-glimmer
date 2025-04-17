@@ -76,7 +76,7 @@ const CaseDetails = () => {
               <h2 className="text-2xl font-semibold">{selectedCase.applicationId}</h2>
               <CaseStatusBadge status={selectedCase.status} />
             </div>
-            <div className="flex gap-2 ins-bts">
+            <div className="flex gap-2 " id="ins-bts">
               
               <Button variant="outline">See Decision Path</Button>
             </div>
