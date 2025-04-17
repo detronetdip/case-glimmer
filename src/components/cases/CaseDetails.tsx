@@ -70,7 +70,7 @@ const CaseDetails = () => {
       </div>
 
       <div className="p-6">
-        <div className="bg-white border border-effectiv-border rounded-md shadow-sm mb-6">
+        <div className="bg-white border border-effectiv-border rounded-md shadow-sm">
           <div className="p-4 flex items-center justify-between border-b border-effectiv-border">
             <div className="flex items-center space-x-3">
               <h2 className="text-2xl font-semibold">{selectedCase.applicationId}</h2>
@@ -118,7 +118,9 @@ const CaseDetails = () => {
             </div>
           )}
         </div>
+          <div id="insight" className="my-4">
 
+          </div>
         <div className="grid grid-cols-7 gap-6">
           <div className="col-span-4">
             <div className="space-y-6">
